@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カフェナルト | 宝塚市売布の喫茶店</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #faf8f5;
+      --bg-warm: #f4ede3;
+      --accent: #8b6b4a;
+      --accent-light: #c9a87a;
+      --text: #2c2c2c;
+      --text-mid: #666666;
+      --text-light: #999999;
+      --border: #e8ddd0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.8;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(4px);
+    }
+    .nav { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; height: 64px; }
+    .logo { flex: 0 0 auto; text-decoration: none; color: var(--text); }
+    .logo-sub { display: block; font-size: 10px; letter-spacing: 0.18em; color: var(--text-light); font-weight: 300; }
+    .logo-name { display: block; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; line-height: 1.1; }
+    .nav-menu { flex: 1; display: flex; justify-content: center; gap: 36px; list-style: none; }
+    .nav-menu a { text-decoration: none; color: var(--text-mid); font-size: 13px; letter-spacing: 0.1em; transition: color 0.2s; }
+    .nav-menu a:hover { color: var(--accent); }
+    .header-phone { font-size: 13px; color: var(--accent); letter-spacing: 0.05em; text-decoration: none; font-weight: 400; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--text); }
+
+    /* ─── MAIN VISUAL ─── */
+    .main-content {
+      margin-top: 64px;
+      display: flex;
+      height: calc(100vh - 64px);
+      min-height: 520px;
+    }
+    .main-left { flex: 1; position: relative; overflow: hidden; background: #e8ddd0; }
+    .store-slideshow { width: 100%; height: 100%; position: relative; }
+    .store-photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .store-photo.active { opacity: 1; }
+    .slide-placeholder {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      background: linear-gradient(135deg, #e8ddd0 0%, #d4c5b2 100%);
+    }
+    .slide-placeholder span { font-size: 48px; opacity: 0.4; }
+    .slide-placeholder p { font-size: 12px; color: var(--text-light); letter-spacing: 0.1em; }
+    .slide-dots { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: background 0.3s; }
+    .dot.active { background: #ffffff; }
+
+    .main-right {
+      flex: 0 0 420px;
+      display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+      padding: 60px 52px;
+      background: var(--bg);
+    }
+    .main-label { font-size: 10px; letter-spacing: 0.25em; color: var(--accent-light); text-transform: uppercase; margin-bottom: 20px; }
+    .main-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px; font-weight: 400;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .main-heading-jp { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 300; color: var(--text-mid); letter-spacing: 0.05em; line-height: 1.9; margin-bottom: 32px; }
+    .main-description { font-size: 13px; color: var(--text-mid); line-height: 2; margin-bottom: 36px; max-width: 300px; }
+    .cta-button {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cta-button:hover { background: #6e5239; transform: translateY(-1px); }
+    .cta-sub { margin-top: 16px; font-size: 11px; color: var(--text-light); letter-spacing: 0.05em; }
+
+    /* ─── SECTION COMMON ─── */
+    section { padding: 88px 0; }
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+    .section-label { font-size: 10px; letter-spacing: 0.28em; color: var(--accent-light); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; margin-bottom: 6px; }
+    .section-title-jp { font-size: 13px; color: var(--text-mid); letter-spacing: 0.1em; margin-bottom: 48px; }
+
+    /* ─── MENU (Products) ─── */
+    .menu-section { background: var(--bg-soft); }
+    .carousel-wrapper { overflow: hidden; }
+    .carousel-track { display: flex; gap: 24px; transition: transform 0.5s ease; }
+    .menu-card {
+      flex: 0 0 260px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+    .menu-card-img {
+      width: 100%; height: 180px;
+      object-fit: cover;
+      background: var(--bg-warm);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-light); font-size: 11px; letter-spacing: 0.08em;
+    }
+    .menu-card-body { padding: 20px 22px 24px; }
+    .menu-card-name { font-size: 14px; font-weight: 400; margin-bottom: 6px; }
+    .menu-card-desc { font-size: 12px; color: var(--text-mid); line-height: 1.9; margin-bottom: 12px; }
+    .menu-card-price { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--accent); }
+    .carousel-nav { display: flex; gap: 12px; margin-top: 28px; }
+    .carousel-btn {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--text-mid); transition: all 0.2s;
+    }
+    .carousel-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── LOCATION ─── */
+    .location-section { background: var(--bg); }
+    .location-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .location-image { width: 100%; }
+    .location-map { width: 100%; aspect-ratio: 4/3; border: none; display: block; }
+    .location-info {}
+    .detail-item { display: flex; padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .detail-item:first-child { border-top: 1px solid var(--border); }
+    .detail-item strong { flex: 0 0 100px; font-size: 12px; font-weight: 400; letter-spacing: 0.08em; color: var(--text-mid); }
+    .detail-item p { font-size: 13px; line-height: 1.9; color: var(--text); }
+    .location-note { margin-top: 28px; font-size: 12px; color: var(--text-light); line-height: 1.9; }
+
+    /* ─── SNS / CONTACT ─── */
+    .contact-section { background: var(--bg-warm); text-align: center; padding: 72px 32px; }
+    .contact-section .section-title { margin-bottom: 4px; }
+    .contact-section .section-title-jp { margin-bottom: 36px; }
+    .contact-phone {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--accent-light);
+      padding-bottom: 4px;
+    }
+    .contact-hours { margin-top: 18px; font-size: 12px; color: var(--text-mid); letter-spacing: 0.06em; line-height: 2; }
+
+    /* ─── FOOTER ─── */
+    .footer { background: #2a2420; color: rgba(255,255,255,0.7); padding: 56px 32px 32px; }
+    .footer-content { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-section {}
+    .footer-logo-name { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; margin-bottom: 10px; }
+    .footer-logo-sub { font-size: 11px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .footer-section h4 { font-size: 11px; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); margin-bottom: 14px; text-transform: uppercase; }
+    .footer-section p, .footer-section address { font-size: 12px; line-height: 2; font-style: normal; }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: rgba(255,255,255,0.3); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .main-content { flex-direction: column; height: auto; }
+      .main-left { height: 54vw; min-height: 280px; }
+      .main-right { flex: none; padding: 48px 28px; }
+      .location-content { grid-template-columns: 1fr; gap: 32px; }
+      .footer-content { grid-template-columns: 1fr; gap: 28px; }
+      .nav-menu { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .main-right { padding: 36px 20px; }
+      .main-heading { font-size: 24px; }
+      .section-inner { padding: 0 20px; }
+      .menu-card { flex: 0 0 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <nav class="nav">
+      <a href="#" class="logo">
+        <span class="logo-sub">Takarazuka, Hyogo</span>
+        <span class="logo-name">Cafe Naruto</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#menu">メニュー</a></li>
+        <li><a href="#location">アクセス</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+      <a href="tel:0797860588" class="header-phone">0797-86-0588</a>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN VISUAL -->
+  <main class="main-content">
+    <div class="main-left">
+      <div class="store-slideshow" id="slideshow">
+        <div class="slide-placeholder" id="placeholder" style="display:none;"></div>
+        <img src="img/store5.png" alt="カフェナルト外観" class="store-photo active">
+        <img src="img/store3.png" alt="カフェナルト店内" class="store-photo">
+        <img src="img/store4.png" alt="カフェナルト店内ボックス席" class="store-photo">
+        <div class="slide-dots" id="slideDots"></div>
+      </div>
+    </div>
+    <div class="main-right">
+      <p class="main-label">Since — Takarazuka</p>
+      <h1 class="main-heading">A cup of coffee,<br>every morning.</h1>
+      <p class="main-heading-jp">売布神社の住宅街で、<br>今日も一杯のコーヒーを。</p>
+      <p class="main-description">
+        老夫婦が丁寧に営む小さな喫茶店。<br>
+        売布神社のそばに佇む、地元の方々に長く愛されてきたお店です。<br>
+        モーニングから夕方まで、ゆっくりとした時間をお届けしています。
+      </p>
+      <a href="tel:0797860588" class="cta-button">お電話でのお問い合わせ</a>
+      <p class="cta-sub">0797-86-0588</p>
+    </div>
+  </main>
+
+  <!-- MENU SECTION -->
+  <section id="menu" class="menu-section">
+    <div class="section-inner">
+      <p class="section-label">Menu</p>
+      <h2 class="section-title">メニュー</h2>
+      <p class="section-title-jp">朝からお気軽にどうぞ</p>
+      <div class="carousel-wrapper">
+        <div class="carousel-track" id="carouselTrack">
+
+          <div class="menu-card">
+            <div class="menu-card-img" style="padding:0;">
+              <img src="img/store1.png" alt="モーニングセット" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="menu-card-body">
+              <p class="menu-card-name">モーニングセット</p>
+              <p class="menu-card-desc">コーヒーにたまごとサラダが付いたお得なモーニング。朝の定番として地元の方々に親しまれています。</p>
+              <p class="menu-card-price">¥ 550</p>
+            </div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-card-img" style="padding:0;">
+              <img src="img/store2.png" alt="コーヒー" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="menu-card-body">
+              <p class="menu-card-name">コーヒー</p>
+              <p class="menu-card-desc">マスターが丁寧に淹れる一杯。カウンターに座れば、ゆっくりとした会話も楽しめます。</p>
+              <p class="menu-card-price">¥ 450</p>
+            </div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-card-img" style="padding:0;">
+              <img src="img/toast.png" alt="トースト" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="menu-card-body">
+              <p class="menu-card-name">トースト</p>
+              <p class="menu-card-desc">サクッと焼き上げたシンプルなトースト。コーヒーとの相性は抜群です。</p>
+              <p class="menu-card-price">単品でもお気軽に</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn" onclick="slideCarousel(-1)">&#8592;</button>
+        <button class="carousel-btn" id="nextBtn" onclick="slideCarousel(1)">&#8594;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION SECTION -->
+  <section id="location" class="location-section">
+    <div class="section-inner">
+      <p class="section-label">Access</p>
+      <h2 class="section-title">アクセス</h2>
+      <p class="section-title-jp">宝塚市売布の静かな住宅街に</p>
+      <div class="location-content">
+        <div class="location-image">
+          <!-- <img src="img/location.jpg" alt="カフェナルト外観" class="location-map"> -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.6474433292774!2d135.35822998912374!3d34.81481070295087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000f417c9f40001%3A0x640cf7a4af335268!2z44Kr44OV44Kn44OK44Or44OI!5e0!3m2!1sja!2sjp!4v1781011261124!5m2!1sja!2sjp"
+            width="600" height="450" style="border:0;width:100%;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div class="location-info">
+          <div class="detail-item">
+            <strong>店名</strong>
+            <p>カフェナルト</p>
+          </div>
+          <div class="detail-item">
+            <strong>住所</strong>
+            <p>〒665-0852<br>兵庫県宝塚市売布２丁目８−１２</p>
+          </div>
+          <div class="detail-item">
+            <strong>電話</strong>
+            <p><a href="tel:0797860588" style="color:var(--accent);text-decoration:none;">0797-86-0588</a></p>
+          </div>
+          <div class="detail-item">
+            <strong>営業時間</strong>
+            <p>月〜土　08:00〜18:00</p>
+          </div>
+          <div class="detail-item">
+            <strong>定休日</strong>
+            <p>日曜日</p>
+          </div>
+          <div class="detail-item">
+            <strong>最寄り駅</strong>
+            <p>阪急宝塚線 売布神社駅<br>（徒歩約3分）</p>
+          </div>
+          <p class="location-note">※ 駐車場あり。住宅街の中ほどにございます。初めての方はお電話でご確認ください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="contact-section">
+    <div class="section-inner" style="max-width:600px;margin:0 auto;">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">お問い合わせ</h2>
+      <p class="section-title-jp">お気軽にご連絡ください</p>
+      <a href="tel:0797860588" class="contact-phone">0797-86-0588</a>
+      <p class="contact-hours">
+        受付時間：月〜土　08:00〜18:00<br>
+        ※ 日曜日はお休みです
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <p class="footer-logo-sub">Takarazuka, Hyogo</p>
+        <p class="footer-logo-name">Cafe Naruto</p>
+        <p style="font-size:12px;line-height:2;">売布神社のそばで、地元の方々に<br>長く愛されてきた小さな喫茶店。</p>
+      </div>
+      <div class="footer-section">
+        <h4>Information</h4>
+        <address>
+          〒665-0852<br>
+          兵庫県宝塚市売布２丁目８−１２<br>
+          TEL: 0797-86-0588
+        </address>
+      </div>
+      <div class="footer-section">
+        <h4>Hours</h4>
+        <p>
+          月・火・水・木・金・土<br>
+          08:00 〜 18:00<br>
+          <span style="color:rgba(255,255,255,0.4);">定休日：日曜日</span>
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© Cafe Naruto. All rights reserved.</span>
+      <span>宝塚市売布の喫茶店</span>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Slideshow (photos in img/ folder)
+    const photos = document.querySelectorAll('.store-photo');
+    const dotsContainer = document.getElementById('slideDots');
+    let currentSlide = 0;
+
+    if (photos.length > 0) {
+      document.getElementById('placeholder').style.display = 'none';
+      photos.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      });
+      setInterval(() => goToSlide((currentSlide + 1) % photos.length), 4000);
+    }
+
+    function goToSlide(n) {
+      photos[currentSlide].classList.remove('active');
+      dotsContainer.children[currentSlide]?.classList.remove('active');
+      currentSlide = n;
+      photos[currentSlide].classList.add('active');
+      dotsContainer.children[currentSlide]?.classList.add('active');
+    }
+
+    // ─── Carousel
+    let carouselPos = 0;
+    const cardWidth = 260 + 24;
+
+    function slideCarousel(dir) {
+      const track = document.getElementById('carouselTrack');
+      const cards = track.querySelectorAll('.menu-card');
+      const maxPos = Math.max(0, cards.length - 3);
+      carouselPos = Math.max(0, Math.min(carouselPos + dir, maxPos));
+      track.style.transform = `translateX(-${carouselPos * cardWidth}px)`;
+    }
+
+    // ─── Mobile menu toggle
+    function toggleMenu() {
+      const menu = document.querySelector('.nav-menu');
+      if (menu.style.display === 'flex') {
+        menu.style.display = '';
+      } else {
+        Object.assign(menu.style, {
+          display: 'flex', flexDirection: 'column', position: 'fixed',
+          top: '64px', left: 0, right: 0, background: '#fff',
+          padding: '20px 32px', gap: '0', borderBottom: '1px solid #e8ddd0'
+        });
+        menu.querySelectorAll('li').forEach(li => li.style.borderBottom = '1px solid #f0ebe4');
+        menu.querySelectorAll('a').forEach(a => Object.assign(a.style, { display: 'block', padding: '14px 0' }));
+      }
+    }
+  </script>
+</body>
+</html>
