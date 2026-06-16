@@ -1,0 +1,7 @@
+.claude/
+.vscode/
+node_modules/
+cafenaruto/
+cafenaruto-1/
+.DS_Store
+スクリーンショット *.png
